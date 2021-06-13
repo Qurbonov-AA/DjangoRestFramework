@@ -18,7 +18,8 @@ urlpatterns = [
          name='interviewlist'),
     path('interviewInUpDel/<int:pk>/', views.MyInterviewInUpDelAPIView.as_view()),
     path('userlist/<int:pk>/', views.UserInterviewList.as_view(), name='user-list'),
-    path('useranswerlist' , views.UserAnswersList.as_view()),
+    path('useranswerlist/<int:pk>/', views.UserAnswersList.as_view()),
+    path('useranswerlist/<str:username>/', views.UsernameAnswersList.as_view()),
     path('useranswercreate', views.UserAnswerCreate.as_view())
 
 

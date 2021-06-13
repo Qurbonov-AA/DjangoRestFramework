@@ -22,7 +22,7 @@ class interviews(models.Model):
 class questions(models.Model):
 
     interview = models.ForeignKey(
-        interviews, on_delete=models.CASCADE, null=True, related_name="question")
+        interviews, on_delete=models.CASCADE, related_name="question")
     text = models.CharField(max_length=200, verbose_name="Текс вопроса")
     type = models.TextField()
 
@@ -36,7 +36,8 @@ class questions(models.Model):
 
 class answers(models.Model):
 
-    username = models.CharField(max_length=255,verbose_name="username", default="None")
+    username = models.CharField(
+        max_length=255, verbose_name="username", default="None")
     type = models.CharField(
         max_length=50, default="Not anonym", verbose_name="поля для типа ответа")
     question = models.ForeignKey(

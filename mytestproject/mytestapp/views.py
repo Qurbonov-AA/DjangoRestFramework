@@ -7,14 +7,15 @@ from mytestapp import serializers
 from mytestapp.models import interviews, questions, answers
 from rest_framework import status
 from mytestapp.serializers import (
-QuestionSerializerCreate, 
-QuestionSerializerList, 
-AnswerSerializerCreate, 
-AnswerSerializerList, 
-InterviewSerializerInUpDel, 
-InterviewSerializerList, 
-InterviewSerializerCreate,
-SnippetSerializer)
+    QuestionSerializerCreate,
+    QuestionSerializerList,
+    AnswerSerializerCreate,
+    AnswerSerializerList,
+    InterviewSerializerInUpDel,
+    InterviewSerializerList,
+    InterviewSerializerCreate,
+    SnippetSerializer,
+    UsernameAnswerSerializer)
 
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.schemas.coreapi import AutoSchema
@@ -32,14 +33,14 @@ def index(request):
 
 class UserInterviewList(APIView):
     queryset = interviews.objects.all()
-    
-    def get(self,request,pk):
+
+    def get(self, request, pk):
         #userlist = []
         #questionlist = []
-        #interview = interviews.objects.raw(
+        # interview = interviews.objects.raw(
         #    "select i.iname, i.description, i.id  from public.mytestapp_interviews as i where edate >= CURRENT_DATE")
 
-        #for item in interview:
+        # for item in interview:
         #    question = questions.objects.raw(
         #        f"select q.text,q.type, q.id from public.mytestapp_questions as q where q.interview_id = {item.id} ")
         #    for qitem in question:
@@ -58,17 +59,27 @@ class UserAnswerCreate(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = AnswerSerializerCreate
     queryset = answers.objects.all()
-    
 
 
-class UserAnswersList(APIView):   
-    queryset = answers.objects.all()    
-    def get(self, request):       
-        queryset = answers.objects.all()        
+class UserAnswersList(APIView):
+    #queryset = answers.objects.all()
+    permission_classes = (AllowAny,)
+
+    def get(self, request, pk):
+        queryset = answers.objects.filter(pk=pk)
         serializer = SnippetSerializer(queryset, many=True)
         return Response(serializer.data)
-        
-    
+
+
+class UsernameAnswersList(APIView):
+
+    permission_classes = (AllowAny,)
+
+    def get(self, request, username):
+        queryset = answers.objects.filter(username=username)
+        serializer = UsernameAnswerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class MyQuestioncreateAPIView(generics.CreateAPIView):
     permission_classes = (IsAdminUser,)
